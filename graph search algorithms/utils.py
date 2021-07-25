@@ -1,4 +1,3 @@
-
 class Queue():
 
 
@@ -27,6 +26,27 @@ class Queue():
             return output
 
 
+class Stack():
+
+    def __init__(self):
+        self.stackList = list()
+
+    def IsEmpty(self ) :
+        if len(self.stackList) == 0 :
+            return True
+        else:
+            return False
+    
+    def Push(self , value) :
+        self.stackList.append(value)
+
+    def Pop(self ) :
+        if not self.IsEmpty() :
+            output = self.stackList[-1]
+            self.stackList = self.stackList[:-1]
+            return output
+        else:
+            return "No data exits"
 
 class Node():
 
@@ -38,8 +58,8 @@ class Node():
         self.visited = False
         self.InQueue = False
         self.previousNode = None
+        self.InStack = False
     
-
     def SetVisited(self , value) :
         self.visited = value
 
@@ -47,6 +67,8 @@ class Node():
     def SetInQueue(self , value) :
         self.InQueue = value
 
+    def SetInStack(self , value) :
+        self.InQueue = value
 
     def SetPreviousNode(self , value) :
         self.previousNode = value
@@ -70,7 +92,7 @@ class Graph():
 
 
     def BFSSearch(self , start , goal):
-
+        self.ClearNodeData()
         startNode = self.FindNode(start)
         goalNode = self.FindNode(goal)
 
@@ -111,3 +133,44 @@ class Graph():
         path += startNode.nodeName 
         path = path[::-1]     
         return path
+    
+
+    def ClearNodeData(self) :
+        for node in self.nodeList :
+            node.SetVisited(False)
+            node.SetInQueue(False)
+            node.SetInStack(False)
+            node.SetPreviousNode(None)
+    
+
+    def DFSSearch(self , start , goal) :
+        self.ClearNodeData()
+        startNode = self.FindNode(start)
+        goalNode = self.FindNode(goal)
+
+        if startNode == None or goalNode == None :
+            return "no valid input"
+        stack = Stack()
+        stack.Push(startNode)
+        path = ""
+        while not stack.IsEmpty() :
+            currentNode = stack.Pop()
+            if currentNode.visited == True :
+                pass
+            currentNode.SetVisited(True)
+            path += currentNode.nodeName 
+            if currentNode == goalNode :
+                return path
+            
+            forwardFlag = 0 
+
+            for neighbor in list(currentNode.neighbors.keys()) :
+                neighborNode = self.FindNode(neighbor)
+                if neighborNode.visited == False :
+                    forwardFlag = 1
+                    stack.Push(neighborNode)
+            
+            if forwardFlag == 0 :
+                path = path[:-1]
+
+                

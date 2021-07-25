@@ -16,4 +16,4 @@ graph = Graph([node1 , node2 , node3 , node4 , node5 , node6])
 
 
 
-print(graph.BFSSearch("S" , "G"))
+print(graph.DFSSearch("S" , "G"))
